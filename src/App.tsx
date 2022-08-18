@@ -1,10 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import ActivityTable from "@pages/activity/components/ActivityTable";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<></>} />
+        <Route path="/" element={<ActivityTable />} />
       </Routes>
     </BrowserRouter>
   );
