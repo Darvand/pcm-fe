@@ -21,11 +21,13 @@ const staticData: ActivityProps[] = [...Array(50).keys()].map((_, index) => ({
 
 const ActivityTable: React.FunctionComponent<IActivityTableProps> = (props) => {
   return (
-    <Table
-      columns={ACTIVITY_TABLE_COLUMNS}
-      data={staticData}
-      onRowClick={(row) => console.log("row", row)}
-    />
+    <div className="">
+      <Table
+        columns={ACTIVITY_TABLE_COLUMNS}
+        data={staticData}
+        onRowClick={(row) => console.log("row", row)}
+      />
+    </div>
   );
 };
 

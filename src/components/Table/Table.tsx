@@ -48,7 +48,7 @@ export default function Table<T extends {}>(props: ITableProps<T>) {
     <>
       <table
         {...getTableProps()}
-        className="border-separate border-spacing-y-1 text-sm"
+        className="border-separate border-spacing-y-1 text-sm table-fixed w-full"
       >
         <TableHead>
           {headerGroups.map((headerGroup) => (
@@ -60,7 +60,9 @@ export default function Table<T extends {}>(props: ITableProps<T>) {
                     isSorted={column.isSorted}
                     isSortedDesc={column.isSortedDesc}
                   >
-                    {column.render("Header")}
+                    <span className="w-full self-center">
+                      {column.render("Header")}
+                    </span>
                   </TableHeaderSorteableCell>
                 );
               })}
