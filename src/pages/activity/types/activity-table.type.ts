@@ -1,8 +1,8 @@
+import { DateTime } from "luxon";
+
 export interface ActivityProps {
   id: string;
-  week: number;
-  year: number;
-  dateFormat: string;
+  date: DateTime;
   hoursWorked: number;
   totalToPay: number;
   totalDebt: number;

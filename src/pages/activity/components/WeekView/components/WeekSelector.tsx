@@ -5,11 +5,13 @@ import {
   IoMdArrowDroprightCircle,
 } from "react-icons/io";
 
-import DisabledNumberCircle from "./DisabledNumberCircle";
-import NumberCircle from "./NumberCircle";
+import DisabledNumberCircle from "../../DisabledNumberCircle";
+import NumberCircle from "../../NumberCircle";
 
 interface IWeekSelectorProps {
-  weeks: number[];
+  dates: DateTime[];
+  selectedWeekIndex: number;
+  setSelectedWeekIndex: (index: number) => void;
 }
 
 const CIRCLE_SIZE = 16 + 64;
@@ -17,38 +19,35 @@ const TRANSLATE_IN_PX = (16 + 64) * 5;
 const WEEKS_OF_SLACK = 5;
 
 const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
-  weeks,
+  dates,
+  selectedWeekIndex,
+  setSelectedWeekIndex,
 }) => {
-  const actualDate = DateTime.now();
   const weekContainerRef = React.useRef<HTMLHeadingElement>(null);
-  const [selectedWeek, setSelectedWeek] = React.useState<number>(
-    actualDate.weekNumber
-  );
   const [moveX, setMoveX] = React.useState(0);
   const monthSize = React.useMemo(
     () =>
-      weeks.reduce<Record<string, number>>((accum, week) => {
-        const month = DateTime.fromObject({ weekYear: 2022, weekNumber: week });
+      dates.reduce<Record<string, number>>((accum, date) => {
         return {
           ...accum,
-          [month.monthLong]: accum[month.monthLong]
-            ? accum[month.monthLong] + 1
+          [date.monthLong]: accum[date.monthLong]
+            ? accum[date.monthLong] + 1
             : 1,
         };
       }, {}),
-    [weeks]
+    [dates]
   );
   React.useEffect(() => {
     if (weekContainerRef) {
       const width = weekContainerRef.current
         ? weekContainerRef.current.offsetWidth / 2
         : 0;
-      setMoveX((selectedWeek - weeks[0]) * CIRCLE_SIZE * -1 + width);
+      setMoveX(selectedWeekIndex * CIRCLE_SIZE * -1 + width);
     }
-  }, [weekContainerRef, selectedWeek]);
+  }, [weekContainerRef, selectedWeekIndex]);
   const canLeft = moveX + TRANSLATE_IN_PX <= 0;
   const canRight =
-    moveX - TRANSLATE_IN_PX > (weeks.length - 1) * TRANSLATE_IN_PX * -1;
+    moveX - TRANSLATE_IN_PX > dates.length * TRANSLATE_IN_PX * -1;
   return (
     <div
       className="grid grid-rows-2 gap-2 py-4"
@@ -56,7 +55,7 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
     >
       <IoMdArrowDropleftCircle
         size={50}
-        className={`cursor-pointer row-start-2 min-w-0 ${
+        className={`cursor-pointer row-start-2 ${
           canLeft ? "text-light-blue" : "text-secondary-dark"
         }`}
         onClick={() => {
@@ -65,12 +64,12 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
           }
         }}
       />
-      <div className="overflow-hidden w-full row-span-2 col-start-2 min-w-0 min-h-0">
+      <div className="overflow-hidden w-full row-span-2 col-start-2">
         <div
           className={`transition ease-in-out duration-300 grid grid-rows-2`}
           style={{
             transform: `translateX(${moveX}px)`,
-            gridTemplateColumns: `repeat(${weeks.length}, 1fr)`,
+            gridTemplateColumns: `repeat(${dates.length}, 1fr)`,
           }}
           ref={weekContainerRef}
         >
@@ -78,8 +77,8 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
             return (
               <div
                 key={monthName}
-                className={`text-lg justify-self-center self-center ${
-                  actualDate.monthLong === monthName
+                className={`text-xl justify-self-center self-center w-full text-center border-l border-light-blue ${
+                  dates[selectedWeekIndex].monthLong === monthName
                     ? "text-light-blue"
                     : "text-white"
                 }`}
@@ -91,13 +90,13 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
               </div>
             );
           })}
-          {weeks.map((week) => (
+          {dates.map((date, index) => (
             <NumberCircle
-              key={week}
-              onClick={() => setSelectedWeek(week)}
-              number={week}
-              className={`hover:bg-light-blue cursor-pointer self-center justify-self-center min-w-0 mx-2 ${
-                selectedWeek === week && "bg-light-blue"
+              key={date.toString()}
+              onClick={() => setSelectedWeekIndex(index)}
+              number={date.weekNumber}
+              className={`hover:border-light-blue border border-secondary-dark cursor-pointer self-center justify-self-center mx-2 ${
+                selectedWeekIndex === index && "bg-light-blue"
               }`}
             />
           ))}
@@ -105,7 +104,7 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
       </div>
       <IoMdArrowDroprightCircle
         size={50}
-        className={`cursor-pointer row-start-2 col-start-3 min-w-0 ${
+        className={`cursor-pointer row-start-2 col-start-3 ${
           canRight ? "text-light-blue" : "text-secondary-dark"
         }`}
         onClick={() => {
