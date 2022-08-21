@@ -17,7 +17,7 @@ const WeekCardList: React.FunctionComponent<IWeekCardListProps> = ({
   const [moveY, setMoveY] = React.useState(0);
   const listContainerRef = React.useRef<HTMLHeadingElement>(null);
   const handleScroll = (event: React.WheelEvent<HTMLDivElement>) => {
-    setMoveY(moveY + event.deltaY);
+    setMoveY(moveY - event.deltaY);
   };
   React.useEffect(() => {
     if (listContainerRef) {

@@ -21,17 +21,16 @@ const WeekCard: React.FunctionComponent<IWeekCardProps> = (props) => {
       className={`
       w-full h-44 flex items-center rounded-xl justify-around py-6 shadow-lg
     bg-primary-dark border-2 border-l-[20px]
-      hover:border-light-blue cursor-pointer
-      ${props.isSelected ? "border-light-blue" : "border-secondary-dark"}
+      cursor-pointer
+      ${
+        props.isSelected
+          ? "border-light-blue"
+          : "border-secondary-dark hover:border-dark-gray"
+      }
     `}
     >
       <div className="flex items-center flex-col gap-3">
-        <NumberCircle
-          number={date.weekNumber}
-          className={`${
-            props.isSelected ? "bg-light-blue" : "bg-secondary-dark"
-          }`}
-        />
+        <NumberCircle number={date.weekNumber} active={props.isSelected} />
         <span
           className={` text-sm ${
             props.isSelected ? "text-light-blue" : "text-light-gray"

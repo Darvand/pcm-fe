@@ -6,21 +6,20 @@ import { ActivityProps } from "@pages/activity/types/activity-table.type";
 import WeekCardList from "./components/WeekCardList";
 import WeekSelector from "./components/WeekSelector";
 
-interface IWeekViewProps {
+interface IWeekViewProps extends React.HTMLAttributes<HTMLDivElement> {
   activity: ActivityProps[];
+  selectedWeekIndex: number;
+  setSelectedWeekIndex: (index: number) => void;
 }
 
-const WeekView: React.FunctionComponent<IWeekViewProps> = ({ activity }) => {
-  const actualDate = DateTime.now();
-  const [selectedWeekIndex, setSelectedWeekIndex] = React.useState<number>(
-    activity.findIndex(
-      (activity) =>
-        activity.date.startOf("week").toISODate() ===
-        actualDate.startOf("week").toISODate()
-    )
-  );
+const WeekView: React.FunctionComponent<IWeekViewProps> = ({
+  activity,
+  selectedWeekIndex,
+  setSelectedWeekIndex,
+  className,
+}) => {
   return (
-    <div className="flex flex-col h-full min-h-0">
+    <div className={`flex flex-col h-full min-h-0 ${className}`}>
       <WeekSelector
         dates={activity.map((data) => data.date)}
         selectedWeekIndex={selectedWeekIndex}

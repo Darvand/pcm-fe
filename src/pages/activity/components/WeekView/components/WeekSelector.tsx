@@ -95,9 +95,8 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
               key={date.toString()}
               onClick={() => setSelectedWeekIndex(index)}
               number={date.weekNumber}
-              className={`hover:border-light-blue border border-secondary-dark cursor-pointer self-center justify-self-center mx-2 ${
-                selectedWeekIndex === index && "bg-light-blue"
-              }`}
+              className="hover:border-dark-gray border border-secondary-dark cursor-pointer self-center justify-self-center mx-2"
+              active={selectedWeekIndex === index}
             />
           ))}
         </div>
