@@ -1,25 +1,19 @@
 import * as React from "react";
-import { BsEyeFill } from "react-icons/bs";
 
-import IconButton from "@components/IconButton";
+import { MonthSummary } from "@pages/activity/hooks/useMonthSummary";
 
-import NumberCircle from "../NumberCircle";
 import MonthCard from "./components/MonthCard";
 
-interface IMonthViewProps {}
+interface IMonthViewProps {
+  data: MonthSummary[];
+}
 
-const MonthView: React.FunctionComponent<IMonthViewProps> = (props) => {
+const MonthView: React.FunctionComponent<IMonthViewProps> = ({ data }) => {
   return (
     <div className="flex flex-wrap gap-6 items-center p-4">
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
-      <MonthCard month="Enero" />
+      {data.map((monthData) => (
+        <MonthCard data={monthData} />
+      ))}
     </div>
   );
 };

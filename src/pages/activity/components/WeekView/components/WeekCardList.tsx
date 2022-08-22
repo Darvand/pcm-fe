@@ -1,14 +1,15 @@
 import * as React from "react";
 
-import { ActivityProps } from "../../../types/activity-table.type";
+import { WeeklySummary } from "@pages/activity/hooks/useWeeklySummary";
+
 import WeekCard from "./WeekCard";
 
 interface IWeekCardListProps {
-  activity: ActivityProps[];
+  activity: WeeklySummary[];
   selectedWeekIndex: number;
 }
 
-const CARD_SIZE_IN_PX = 176 + 16;
+const CARD_SIZE_IN_PX = 128 + 16;
 
 const WeekCardList: React.FunctionComponent<IWeekCardListProps> = ({
   activity,

@@ -1,13 +1,14 @@
 import { DateTime } from "luxon";
 import * as React from "react";
 
+import { WeeklySummary } from "@pages/activity/hooks/useWeeklySummary";
 import { ActivityProps } from "@pages/activity/types/activity-table.type";
 
 import WeekCardList from "./components/WeekCardList";
 import WeekSelector from "./components/WeekSelector";
 
 interface IWeekViewProps extends React.HTMLAttributes<HTMLDivElement> {
-  activity: ActivityProps[];
+  activity: WeeklySummary[];
   selectedWeekIndex: number;
   setSelectedWeekIndex: (index: number) => void;
 }

@@ -13,10 +13,11 @@ module.exports = {
       gray: "#54586C",
       "dark-gray": "#696C76",
       white: "#ffffff",
-      blue: "#2F466C",
+      blue: "#23648C",
       "light-blue": "#4CA2D8",
       dark: "#6E747B",
       black: "#000",
+      call: "#D99E4C",
     },
     extend: {
       gridTemplateColumns: {

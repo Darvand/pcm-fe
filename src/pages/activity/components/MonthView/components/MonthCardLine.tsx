@@ -6,10 +6,12 @@ import { toColCurrency } from "@utils/currency.util";
 interface IMonthCardLineProps {
   Icon: IconType;
   label: string;
-  value: number;
+  value: string | number;
+  isCurrency?: boolean;
 }
 
 const MonthCardLine: React.FunctionComponent<IMonthCardLineProps> = ({
+  isCurrency = false,
   Icon,
   label,
   value,
@@ -17,12 +19,14 @@ const MonthCardLine: React.FunctionComponent<IMonthCardLineProps> = ({
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-2">
-        <div className="p-4 bg-secondary-dark rounded-xl text-light-gray">
+        <div className="p-3 bg-secondary-dark rounded-xl text-light-gray">
           <Icon />
         </div>
-        <span>{label}</span>
+        <span className="text-light-gray">{label}</span>
       </div>
-      <span className="font-bold">{toColCurrency(value)}</span>
+      <span className="font-bold">
+        {isCurrency ? toColCurrency(+value) : value}
+      </span>
     </div>
   );
 };

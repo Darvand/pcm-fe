@@ -56,7 +56,7 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
       <IoMdArrowDropleftCircle
         size={50}
         className={`cursor-pointer row-start-2 ${
-          canLeft ? "text-light-blue" : "text-secondary-dark"
+          canLeft ? "text-call" : "text-secondary-dark"
         }`}
         onClick={() => {
           if (canLeft) {
@@ -66,7 +66,7 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
       />
       <div className="overflow-hidden w-full row-span-2 col-start-2">
         <div
-          className={`transition ease-in-out duration-300 grid grid-rows-2`}
+          className={`transition ease-in-out duration-300 grid grid-rows-2 h-full`}
           style={{
             transform: `translateX(${moveX}px)`,
             gridTemplateColumns: `repeat(${dates.length}, 1fr)`,
@@ -95,7 +95,7 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
               key={date.toString()}
               onClick={() => setSelectedWeekIndex(index)}
               number={date.weekNumber}
-              className="hover:border-dark-gray border border-secondary-dark cursor-pointer self-center justify-self-center mx-2"
+              className="hover:border-call border border-secondary-dark cursor-pointer self-center justify-self-center mx-2"
               active={selectedWeekIndex === index}
             />
           ))}
@@ -104,7 +104,7 @@ const WeekSelector: React.FunctionComponent<IWeekSelectorProps> = ({
       <IoMdArrowDroprightCircle
         size={50}
         className={`cursor-pointer row-start-2 col-start-3 ${
-          canRight ? "text-light-blue" : "text-secondary-dark"
+          canRight ? "text-call" : "text-secondary-dark"
         }`}
         onClick={() => {
           if (canRight) {

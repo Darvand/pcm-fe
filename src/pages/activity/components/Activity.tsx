@@ -3,7 +3,9 @@ import * as React from "react";
 
 import Switch from "@components/Switch";
 
-import { ActivityProps } from "../types/activity-table.type";
+import { useMonthSummary } from "../hooks/useMonthSummary";
+import { useWeeklySummary } from "../hooks/useWeeklySummary";
+import { ExpenseCategory, WeeklyActivity } from "../types/activity-table.type";
 import MonthView from "./MonthView/MonthView";
 import WeekView from "./WeekView/WeekView";
 
@@ -11,16 +13,45 @@ interface IActivityProps {}
 
 const actualDate = DateTime.now().setLocale("es-CO").minus({ weeks: 20 });
 
-const staticData: ActivityProps[] = [...Array(40).keys()].map((_, index) => ({
-  id: `${index}`,
-  date: actualDate.plus({ week: index + 1 }),
-  hoursWorked: 47.5,
-  totalToPay: 1183701,
-  totalDebt: 69111,
-  totalExpenses: 213665,
-  utility: 890029,
-  status: "Pagado",
-}));
+const mockActivity: WeeklyActivity[] = [...Array(40).keys()].map((_, index) => {
+  const date = actualDate.plus({ week: index + 1 });
+  return {
+    id: `${index}`,
+    dailyActivity: [...Array(5).keys()].map((_, dayNumber) => {
+      const date = actualDate.plus({ week: index + 1, days: dayNumber + 1 });
+      return {
+        breakTimeInMinutes: 30,
+        date,
+        template: `template${dayNumber}`,
+        startHour: date.plus({ hours: 8 }),
+        endHour: date.plus({ hours: 18 }),
+        minutesWorked: 600,
+      };
+    }),
+    dailyExpenses: [...Array(5).keys()].map((_, dayNumber) => ({
+      date: actualDate.plus({ week: index + 1, days: dayNumber + 1 }),
+      category: ExpenseCategory.GAS,
+      value: Math.floor(Math.random() * 300000),
+    })),
+    weeklyDeductions: [
+      {
+        concept: "Retefuente",
+        price: Math.floor(Math.random() * 200000),
+      },
+    ],
+    weeklySettlement: [
+      {
+        material: "Material 45123",
+        minutesPayed: 600 * 5,
+        anotherValue: 14500,
+        settlement: Math.floor(Math.random() * 1500000),
+      },
+    ],
+    week: date.weekNumber,
+    year: date.year,
+    status: "Pagado",
+  };
+});
 
 const viewSwitchValues = [
   { value: "day", label: "Dia" },
@@ -32,13 +63,14 @@ const Activity: React.FunctionComponent<IActivityProps> = (props) => {
   const actualDate = DateTime.now();
   const [viewSelected, setViewSelected] = React.useState<string>("week");
   const [selectedWeekIndex, setSelectedWeekIndex] = React.useState<number>(
-    staticData.findIndex(
+    mockActivity.findIndex(
       (activity) =>
-        activity.date.startOf("week").toISODate() ===
-        actualDate.startOf("week").toISODate()
+        activity.week === actualDate.weekNumber &&
+        activity.year === actualDate.year
     )
   );
-  console.log(selectedWeekIndex);
+  const weeklySummary = useWeeklySummary(mockActivity);
+  const monthSummary = useMonthSummary(weeklySummary);
   return (
     <div className="h-full flex flex-col items-center">
       <Switch
@@ -48,11 +80,11 @@ const Activity: React.FunctionComponent<IActivityProps> = (props) => {
       />
       <WeekView
         className={viewSelected === "week" ? "block" : "hidden"}
-        activity={staticData}
+        activity={weeklySummary}
         selectedWeekIndex={selectedWeekIndex}
         setSelectedWeekIndex={setSelectedWeekIndex}
       />
-      {viewSelected === "month" && <MonthView />}
+      {viewSelected === "month" && <MonthView data={monthSummary} />}
     </div>
   );
 };
